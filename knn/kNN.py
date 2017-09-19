@@ -1,5 +1,10 @@
 from numpy import *
+<<<<<<< HEAD
 
+=======
+import matplotlib
+import matplotlib.pyplot as plt
+>>>>>>> 4aa66ee5980a682e05baf3725daf2ad074607f49
 import operator
 
 def createDateaSet():
@@ -19,8 +24,13 @@ def classify0(inX,dataSet,labels,k):
         classCount[voteIlabel]=classCount.get(voteIlabel,0)+1
     sortedClassCount = sorted(classCount.items(),key=operator.itemgetter(1),reverse=True)
     return sortedClassCount[0][0]
+<<<<<<< HEAD
 group,labels = createDateaSet()
 # print(classify0([0,0],group,labels,3))
+=======
+# group,labels = createDateaSet()
+# print(classify0([0,0],group,labels,4))
+>>>>>>> 4aa66ee5980a682e05baf3725daf2ad074607f49
 def file2matrix(filename):
     fr=open(filename)
     arrayOLines = fr.readlines()
@@ -35,6 +45,49 @@ def file2matrix(filename):
         classLabelVector.append(int(listFromLine[-1]))
         index+=1
     return returnMat,classLabelVector
+<<<<<<< HEAD
 dataingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
 print(dataingDataMat)
 print(datingLabels)
+=======
+# dataingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
+# fig = plt.figure()
+# ax=fig.add_subplot(111)
+# ax.set_title("scatter's name!")
+# print(matplotlib.matplotlib_fname())
+# ax.scatter(dataingDataMat[:,0],dataingDataMat[:,1],15.0*array(datingLabels),15.0*array(datingLabels))
+# plt.show()
+def autoNorm(dataSet):
+    minVals = dataSet.min(0)
+    maxVals = dataSet.max(0)
+    ranges = maxVals - minVals
+    normDataSet = zeros(shape(dataSet))
+    m = dataSet.shape[0]
+    normDataSet = dataSet - tile(minVals, (m, 1))
+    normDataSet = normDataSet / tile(ranges, (m, 1))
+    return normDataSet,ranges,minVals
+def datingClassTest():
+    hoRatio =0.10
+    datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')
+    normMat,ranges,minVals = autoNorm(datingDataMat)
+    m=normMat.shape[0]
+    numTestVecs = int(m*hoRatio)
+    errorCount = 0.0
+    for i in range(numTestVecs):
+        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],15)
+        print("the classifier came back with:%d,the real answer is:%d"%(classifierResult,datingLabels[i]))
+        if(classifierResult!=datingLabels[i]):errorCount+=1.0
+        print("the total success rate is:%f"%(1.0-errorCount/float(numTestVecs)))
+# datingClassTest()
+def classifyPerson():
+    resultList=['not at all','in small does','in large doses']
+    percentTats = float(input("percentage of time spent playing video games?"))
+    ffMiles=float(input("frequent flier miles earned per year?"))
+    iceCream =float(input('liters of ice cream consumed per year?'))
+    datingDataMat,datingLabels=file2matrix('datingTestSet2.txt')
+    normMat,ranges,minVals=autoNorm(datingDataMat)
+    inArr=array([ffMiles,percentTats,iceCream])
+    classifierResult = classify0((inArr-minVals)/ranges,normMat,datingLabels,10)
+    print("you will probably like this person:",resultList[classifierResult-1])
+# classifyPerson()
+>>>>>>> 4aa66ee5980a682e05baf3725daf2ad074607f49
